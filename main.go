@@ -30,7 +30,7 @@ func main() {
 	}
 
 	taskname := os.Args[1]
-	fmt.Printf("start tracking: %s\n", taskname)
+	fmt.Printf("start tracking: %s: %v\n", taskname, t.Format(time.Stamp))
 
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt)
@@ -38,7 +38,7 @@ func main() {
 
 	elapsed := time.Since(t)
 
-	fmt.Printf("tracking finished: %s: %v\n", taskname, elapsed)
+	fmt.Printf("finish tracking: %s: %v\n", taskname, elapsed.Truncate(time.Second))
 
 	f, err := os.OpenFile(tthist, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	defer f.Close()
