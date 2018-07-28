@@ -36,7 +36,7 @@ func main() {
 	signal.Notify(ch, os.Interrupt)
 	<-ch
 
-	elapsed := time.Since(t).Round(time.Second)
+	elapsed := time.Since(t)
 
 	fmt.Printf("tracking finished: %s: %v\n", taskname, elapsed)
 
@@ -46,7 +46,8 @@ func main() {
 		panic(err)
 	}
 
-	_, err = f.WriteString(fmt.Sprintf("\n%s\t%d", taskname, elapsed/time.Second))
+	histEntry := fmt.Sprintf("%s\t%d\t%d\n", taskname, t.Unix(), int64(elapsed.Seconds()))
+	_, err = f.WriteString(histEntry)
 	if err != nil {
 		panic(err)
 	}
